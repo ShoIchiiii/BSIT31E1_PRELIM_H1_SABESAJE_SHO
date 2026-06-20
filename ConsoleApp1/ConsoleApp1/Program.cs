@@ -1,6 +1,4 @@
-﻿using System;
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using System.Linq;
 
@@ -17,30 +15,6 @@ namespace StudentManagementSystem
         {
 
             students.Add(new Student(name, grades));
-
-        }
-
-        public static string ViewAllStudents(List<Student> students)
-
-        {
-
-            if (students.Count == 0) return "No students to display.";
-
-            var lines = new List<string>();
-
-            foreach (var s in students)
-
-            {
-
-                lines.Add("Name: " + s.Name);
-
-                lines.Add("Grades: " + string.Join(", ", s.Grades));
-
-                lines.Add("Average: " + s.Average().ToString("0.00"));
-
-            }
-
-            return string.Join(Environment.NewLine, lines);
 
         }
 
@@ -84,7 +58,33 @@ namespace StudentManagementSystem
 
             }
 
-            return (highest == int.MinValue) ? ("", 0) : (topStudent, highest);
+            if (highest == int.MinValue) return ("", 0);
+
+            return (topStudent, highest);
+
+        }
+
+        public static string ViewAllStudents(List<Student> students)
+
+        {
+
+            if (students.Count == 0) return "No students to display.";
+
+            var lines = new List<string>();
+
+            foreach (var s in students)
+
+            {
+
+                lines.Add("Name: " + s.Name);
+
+                lines.Add("Grades: " + string.Join(", ", s.Grades));
+
+                lines.Add("Average: " + s.Average().ToString("0.00"));
+
+            }
+
+            return string.Join(System.Environment.NewLine, lines);
 
         }
 
