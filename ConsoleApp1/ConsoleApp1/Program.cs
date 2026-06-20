@@ -1,152 +1,94 @@
 ﻿using System;
+
 using System.Collections.Generic;
 
-class Program
+using System.Linq;
+
+namespace StudentManagementSystem
+
 {
-    static List<string> studentNames = new List<string>();
-    static List<double[]> studentGrades = new List<double[]>();
 
-    static void Main()
+    public static class StudentLogic
+
     {
-        int choice;
 
-        do
+        public static void AddStudent(List<Student> students, string name, List<int> grades)
+
         {
-            Console.WriteLine("\n===== STUDENT SYSTEM =====");
-            Console.WriteLine("1. Add Student");
-            Console.WriteLine("2. View all Students");
-            Console.WriteLine("3. Compute Average Grade");
-            Console.WriteLine("4. Find Highest Grade");
-            Console.WriteLine("5. Exit");
-            Console.WriteLine("==========================");
-            Console.Write("Choose an option: ");
 
-            if (!int.TryParse(Console.ReadLine(), out choice))
+            students.Add(new Student(name, grades));
+
+        }
+
+        public static string ViewAllStudents(List<Student> students)
+
+        {
+
+            if (students.Count == 0) return "No students to display.";
+
+            var lines = new List<string>();
+
+            foreach (var s in students)
+
             {
-                Console.WriteLine("Invalid input!");
-                continue;
+
+                lines.Add("Name: " + s.Name);
+
+                lines.Add("Grades: " + string.Join(", ", s.Grades));
+
+                lines.Add("Average: " + s.Average().ToString("0.00"));
+
             }
 
-            switch (choice)
+            return string.Join(Environment.NewLine, lines);
+
+        }
+
+        public static double ComputeClassAverage(List<Student> students)
+
+        {
+
+            if (students.Count == 0) return 0.0;
+
+            var allGrades = students.SelectMany(s => s.Grades).ToList();
+
+            return allGrades.Count == 0 ? 0.0 : allGrades.Average();
+
+        }
+
+        public static (string topStudent, int highestGrade) FindHighestGrade(List<Student> students)
+
+        {
+
+            if (students.Count == 0) return ("", 0);
+
+            int highest = int.MinValue;
+
+            string topStudent = "";
+
+            foreach (var s in students)
+
             {
-                case 1:
-                    AddStudent();
-                    break;
-                case 2:
-                    ViewAllStudents();
-                    break;
-                case 3:
-                    ComputeClassAverage();
-                    break;
-                case 4:
-                    FindHighestGrade();
-                    break;
-                case 5:
-                    Console.WriteLine("\nExiting program...");
-                    Console.WriteLine("Goodbye!");
-                    break;
-                default:
-                    Console.WriteLine("Invalid choice!");
-                    break;
-            }
 
-        } while (choice != 5);
-    }
+                int studentMax = s.Grades.Count > 0 ? s.Grades.Max() : int.MinValue;
 
-    static void AddStudent()
-    {
-        Console.Write("\nEnter student name: ");
-        string name = Console.ReadLine();
+                if (studentMax > highest)
 
-        Console.Write("Enter grade 1: ");
-        double grade1 = Convert.ToDouble(Console.ReadLine());
-
-        Console.Write("Enter grade 2: ");
-        double grade2 = Convert.ToDouble(Console.ReadLine());
-
-        Console.Write("Enter grade 3: ");
-        double grade3 = Convert.ToDouble(Console.ReadLine());
-
-        studentNames.Add(name);
-        studentGrades.Add(new double[] { grade1, grade2, grade3 });
-
-        Console.WriteLine("Student added successfully!");
-    }
-
-    static void ViewAllStudents()
-    {
-        if (studentNames.Count == 0)
-        {
-            Console.WriteLine("\nNo students found.");
-            return;
-        }
-
-        Console.WriteLine("\n===== STUDENT LIST =====");
-
-        for (int i = 0; i < studentNames.Count; i++)
-        {
-            double average =
-                (studentGrades[i][0] +
-                 studentGrades[i][1] +
-                 studentGrades[i][2]) / 3;
-
-            Console.WriteLine($"\nName: {studentNames[i]}");
-            Console.WriteLine($"Grades: {studentGrades[i][0]}, {studentGrades[i][1]}, {studentGrades[i][2]}");
-            Console.WriteLine($"Average: {average:F2}");
-        }
-    }
-
-    static void ComputeClassAverage()
-    {
-        if (studentNames.Count == 0)
-        {
-            Console.WriteLine("\nNo students available.");
-            return;
-        }
-
-        double totalAverage = 0;
-
-        for (int i = 0; i < studentNames.Count; i++)
-        {
-            double studentAverage =
-                (studentGrades[i][0] +
-                 studentGrades[i][1] +
-                 studentGrades[i][2]) / 3;
-
-            totalAverage += studentAverage;
-        }
-
-        double classAverage = totalAverage / studentNames.Count;
-
-        Console.WriteLine("\n===== CLASS AVERAGE =====");
-        Console.WriteLine($"Overall Average Grade: {classAverage:F2}");
-    }
-
-    static void FindHighestGrade()
-    {
-        if (studentNames.Count == 0)
-        {
-            Console.WriteLine("\nNo students available.");
-            return;
-        }
-
-        string topStudent = "";
-        double highestGrade = 0;
-
-        for (int i = 0; i < studentNames.Count; i++)
-        {
-            foreach (double grade in studentGrades[i])
-            {
-                if (grade > highestGrade)
                 {
-                    highestGrade = grade;
-                    topStudent = studentNames[i];
+
+                    highest = studentMax;
+
+                    topStudent = s.Name;
+
                 }
+
             }
+
+            return (highest == int.MinValue) ? ("", 0) : (topStudent, highest);
+
         }
 
-        Console.WriteLine("\n===== HIGHEST GRADE =====");
-        Console.WriteLine($"Top Student: {topStudent}");
-        Console.WriteLine($"Highest Grade: {highestGrade}");
     }
+
 }
+
