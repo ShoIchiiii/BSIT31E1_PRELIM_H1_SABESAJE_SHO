@@ -1,124 +1,57 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace StudentManagementSystem
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static List<Student> students = new List<Student>();
+        StudentManager manager = new StudentManager();
 
-        static void Main(string[] args)
+        bool running = true;
+
+        while (running)
         {
-            int choice;
-
-            do
-            {
-                ShowMainMenu();
-                Console.Write("Choose an option: ");
-
-                string input = Console.ReadLine();
-                while (!int.TryParse(input, out choice) || choice < 1 || choice > 5)
-                {
-                    Console.Write("Invalid input. Choose an option (1-5): ");
-                    input = Console.ReadLine();
-                }
-
-                Console.WriteLine();
-
-                switch (choice)
-                {
-                    case 1:
-                        AddStudent();
-                        break;
-                    case 2:
-                        ViewAllStudents();
-                        break;
-                    case 3:
-                        ComputeClassAverage();
-                        break;
-                    case 4:
-                        FindHighestGrade();
-                        break;
-                    case 5:
-                        ExitProgram();
-                        break;
-                }
-
-            } while (choice != 5);
-        }
-
-        static void ShowMainMenu()
-        {
-            Console.WriteLine("===== STUDENT SYSTEM =====");
+            Console.WriteLine("\n===== STUDENT MANAGEMENT SYSTEM =====");
             Console.WriteLine("1. Add Student");
-            Console.WriteLine("2. View All Students");
-            Console.WriteLine("3. Compute Average Grade");
-            Console.WriteLine("4. Find Highest Grade");
-            Console.WriteLine("5. Exit");
-            Console.WriteLine("==========================");
-        }
+            Console.WriteLine("2. View Students");
+            Console.WriteLine("3. View Student Average");
+            Console.WriteLine("4. View Class Average");
+            Console.WriteLine("5. View Top Student");
+            Console.WriteLine("6. Exit");
+            Console.Write("Choose an option: ");
 
-        static void AddStudent()
-        {
-            Console.Write("Enter student name: ");
-            string name = (Console.ReadLine() ?? "").Trim();
+            string choice = Console.ReadLine();
 
-            var grades = new List<int>();
-            for (int i = 1; i <= 3; i++)
+            switch (choice)
             {
-                int grade;
-                while (true)
-                {
-                    Console.Write($"Enter grade {i}: ");
-                    string gInput = Console.ReadLine();
+                case "1":
+                    manager.AddStudent();
+                    break;
 
-                    if (int.TryParse(gInput, out grade) && grade >= 0 && grade <= 100)
-                        break;
+                case "2":
+                    manager.ViewStudents();
+                    break;
 
-                    Console.WriteLine("Please enter a valid grade (0-100).");
-                }
-                grades.Add(grade);
+                case "3":
+                    manager.ViewStudentAverage();
+                    break;
+
+                case "4":
+                    manager.ViewClassAverage();
+                    break;
+
+                case "5":
+                    manager.ViewTopStudent();
+                    break;
+
+                case "6":
+                    running = false;
+                    Console.WriteLine("Goodbye!");
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid choice.");
+                    break;
             }
-
-            StudentLogic.AddStudent(students, name, grades);
-            Console.WriteLine("Student added successfully!");
-        }
-
-        static void ViewAllStudents()
-        {
-            Console.WriteLine("===== STUDENT LIST =====");
-
-            string output = StudentLogic.ViewAllStudents(students);
-            Console.WriteLine(output);
-        }
-
-        static void ComputeClassAverage()
-        {
-            Console.WriteLine("===== CLASS AVERAGE =====");
-            double overall = StudentLogic.ComputeClassAverage(students);
-            Console.WriteLine($"Overall Average Grade: {overall:0.00}");
-        }
-
-        static void FindHighestGrade()
-        {
-            Console.WriteLine("===== HIGHEST GRADE =====");
-            var result = StudentLogic.FindHighestGrade(students);
-
-            if (result.topStudent == "")
-            {
-                Console.WriteLine("Top Student: ");
-                Console.WriteLine("Highest Grade: 0");
-                return;
-            }
-
-            Console.WriteLine("Top Student: " + result.topStudent);
-            Console.WriteLine("Highest Grade: " + result.highestGrade);
-        }
-
-        static void ExitProgram()
-        {
-            Console.WriteLine("Exiting program...");
-            Console.WriteLine("Goodbye!");
         }
     }
 }
