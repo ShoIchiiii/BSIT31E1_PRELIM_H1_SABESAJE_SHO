@@ -13,6 +13,6 @@ public class Student
     public double Average()
     {
         return Grades.Count == 0 ? 0.0 : Grades.Average();
-    }
+    }///text
 }
    
