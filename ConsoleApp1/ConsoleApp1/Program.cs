@@ -40,7 +40,7 @@ class Program
 
                 case "5":
                     running = false;
-                    Console.WriteLine("Goodbye!");
+                    Console.WriteLine("Exiting program... \n Goodbye!");
                     break;
 
                 default:
