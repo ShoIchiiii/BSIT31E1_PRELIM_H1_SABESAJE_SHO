@@ -22,6 +22,24 @@ class Student
         return name;
     }
 
+    public string GetGradesText()
+    {
+        if (grades.Count == 0)
+            return "";
+
+        string text = "";
+
+        for (int i = 0; i < grades.Count; i++)
+        {
+            if (i > 0)
+                text += ", ";
+
+            text += grades[i].ToString("F0");
+        }
+
+        return text;
+    }
+
     public double GetAverage()
     {
         if (grades.Count == 0)
