@@ -49,31 +49,6 @@ class StudentManager
         }
     }
 
-    public void ViewStudentAverage()
-    {
-        if (students.Count == 0)
-        {
-            Console.WriteLine("No students found.");
-            return;
-        }
-
-        Console.Write("Enter student name: ");
-        string search = Console.ReadLine();
-
-        for (int i = 0; i < students.Count; i++)
-        {
-            Student s = students[i];
-
-            if (string.Equals(s.GetName(), search, StringComparison.OrdinalIgnoreCase))
-            {
-                Console.WriteLine("Average: " + s.GetAverage().ToString("F2"));
-                return;
-            }
-        }
-
-        Console.WriteLine("Student not found.");
-    }
-
     public void ViewClassAverage()
     {
         if (students.Count == 0)
@@ -114,8 +89,8 @@ class StudentManager
             }
         }
 
-        Console.WriteLine("\n===== TOP STUDENT =====");
-        Console.WriteLine("Name: " + topStudent.GetName());
-        Console.WriteLine("Average: " + topStudent.GetAverage().ToString("F2"));
+        Console.WriteLine("\n===== HIGHEST GRADE =====");
+        Console.WriteLine("Top Student: " + topStudent.GetName());
+        Console.WriteLine("Highest Grade: " + topStudent.GetAverage().ToString("F0"));
     }
 }
